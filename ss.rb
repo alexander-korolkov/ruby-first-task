@@ -26,13 +26,14 @@ gen_absolute_url = ->(origin_absolute_url) do
 end
 
 absolute_url = gen_absolute_url.call(url)
-url = url.path
 
 links = ->(all_links, url) do
   unless all_links.has_key?(url)
     all_links[url] = gen_parse_all_links.call(absolute_url.call(url)).
         call(read_page.call(absolute_url.call(url)))
-    all_links[url].each { |link| links.call(all_links, link) }
+    all_links[url].each do
+      |link| links.call(all_links, link)
+    end
   end
   all_links
 end
@@ -50,9 +51,12 @@ end
 list_indegrees = ->(all_links) do
   indegrees = {}
   all_links.each_value do |links|
-    links.each {|link| indegrees[link] ||= 0; indegrees[link] += 1}
+    links.each do
+      |link| indegrees[link] ||= 0
+      indegrees[link] += 1
+    end
   end
   indegrees
 end
 
-sort_list_indegrees.call(list_indegrees.call(links.call({}, url)))
+sort_list_indegrees.call(list_indegrees.call(links.call({}, url.path)))
