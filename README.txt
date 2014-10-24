@@ -140,4 +140,37 @@ ss.rb:
 массив ссылок. Это упростит написание тестов, в которых мы будем сразу обращаться к нужным нам свойствам класса.
 
 ================================================================================
+24.10 * AK
+
+Никак не могу разобраться, как использовать метод класса, внутри этого класса? Например,
+
+class BuildSubsite
+
+  def some_metod_one
+      ...do something...
+  end
+ 
+  def second_metod
+      #Нужно использовать some_metod_one здесь.
+      #Но как?!
+  end
+
+end 
+
+Ответ EugeneHlyzov:
+
+class X
+    def a; 'a'; end
+    def b; "call #{a}"; end    
+end
+
+X.new.b
+
+Если не прорешал коаны на классы - то исправляйся:
+http://koans.herokuapp.com/en/about_methods   <-- здесь тоже ответ на вопрос
+http://koans.herokuapp.com/en/about_classes
+http://koans.herokuapp.com/en/about_class_methods
+http://koans.herokuapp.com/en/about_modules
+
+================================================================================
 
