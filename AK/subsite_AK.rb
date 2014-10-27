@@ -18,7 +18,7 @@ class BuildSubsite
   end
 
   def count_indegree_in_subsite(subsite, url)
-    links = get_array_of_sublinks.call( open(url).read )
+    links = get_array_of_sublinks.call( url,  get_html_by_url.call(url))
     links.reduce(subsite) do |hash, link|
       if subsite.has_key?(link)
         subsite[link] += 1
@@ -27,6 +27,14 @@ class BuildSubsite
         count_indegree_in_subsite.call(subsite, link)
       end
       subsite
+    end
+  end
+
+  def sort_links_indegree(links_indegree)
+    links_indegree.sort do |(_, indegree1), (_, indegree2)|
+      indegree2  <=>  indegree1 #ок
+    end.each do |(link, indegree)|
+      p "#{link}: #{indegree}"
     end
   end
 
@@ -42,4 +50,6 @@ new_site = BuildSubsite.new
 html = new_site.get_html_by_url(url)
 links = new_site.get_array_of_sublinks(url, html)
 
-p links
+links_indegree = new_site.count_indegree_in_subsite({'/' => 0}, '/')
+
+#new_site.sort_links_indegree(links_indegree)
